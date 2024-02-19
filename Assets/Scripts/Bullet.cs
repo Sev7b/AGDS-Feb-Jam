@@ -5,5 +5,15 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public int damage;
-    public int speed;
+    public float speed;
+
+    private void Awake()
+    {
+        Invoke(nameof(DestroySelf), 10f);
+    }
+
+    private void DestroySelf()
+    {
+        Destroy(gameObject);
+    }
 }
