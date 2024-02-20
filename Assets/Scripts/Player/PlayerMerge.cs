@@ -10,15 +10,15 @@ public class PlayerMerge : MonoBehaviour
     public GameObject mergedPlayer;
 
     [Header("Stats")]
-    public float mergeDistance = 2f; // Distance within which players can merge
-    public float cooldown = 5f;
-    public float mergeLength = 5f; // Cooldown duration in seconds
+    public float mergeDistance; // Distance within which players can merge
+    public float cooldown;
+    public float mergeLength; // Cooldown duration in seconds
 
     [Header("UI Elements")]
     public Slider mergeSlider; // Assign this in the inspector
-    public Color cooldownColor = Color.blue; // Color when in cooldown
-    public Color mergeColor = Color.green; // Color during merge
-    public Color readyColor = Color.yellow; // Color when merge is ready
+    public Color cooldownColor; // Color when in cooldown
+    public Color mergeColor; // Color during merge
+    public Color readyColor; // Color when merge is ready
 
     #region Private Variables
 
@@ -29,9 +29,11 @@ public class PlayerMerge : MonoBehaviour
 
     private void Start()
     {
+        lastMergeTime = Time.time;
+
         if (mergeSlider != null)
         {
-            mergeSlider.maxValue = mergeLength;
+            mergeSlider.maxValue = cooldown;
             mergeSlider.value = 0;
 
             mergeSlider.fillRect.GetComponentInChildren<Image>().color = cooldownColor;
@@ -42,18 +44,9 @@ public class PlayerMerge : MonoBehaviour
     void Update()
     {
         // Check if Q is pressed and if the cooldown has elapsed
-        if (Input.GetKeyDown(KeyCode.Q) && Time.time >= lastMergeTime + cooldown)
+        if (Input.GetKeyDown(KeyCode.Q) && Time.time >= lastMergeTime + cooldown && !isMerged)
         {
-            if (!isMerged)
-            {
-                // Attempt to merge
-                TryMergePlayers();
-            }
-            else
-            {
-                // Attempt to unmerge
-                UnmergePlayers();
-            }
+            TryMergePlayers();
         }
 
         UpdateSlider();
@@ -115,12 +108,14 @@ public class PlayerMerge : MonoBehaviour
             if (isMerged)
             {
                 // During merge, show the remaining merge duration
+                mergeSlider.maxValue = mergeLength;
                 mergeSlider.value = mergeLength - timeSinceLastMerge;
                 mergeSlider.fillRect.GetComponentInChildren<Image>().color = mergeColor;
             }
-            else if (timeSinceLastMerge < mergeLength)
+            else if (timeSinceLastMerge < cooldown)
             {
                 // Show the cooldown progress
+                mergeSlider.maxValue = cooldown;
                 mergeSlider.value = timeSinceLastMerge;
                 mergeSlider.fillRect.GetComponentInChildren<Image>().color = cooldownColor;
             }
