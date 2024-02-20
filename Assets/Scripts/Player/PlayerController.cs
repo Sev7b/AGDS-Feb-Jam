@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     #region Private Variables
 
     private Rigidbody2D rb;
-    private Vector2 movement;
     private Vector2 moveDirection = Vector2.zero;
     private Vector2 mousePosition = Vector2.zero;
 
