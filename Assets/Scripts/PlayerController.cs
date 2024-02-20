@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public bool isPlayer1;
+
     public float moveSpeed = 5f;
 
     #region Private Variables
 
     private Rigidbody2D rb;
+    private Vector2 movement;
     private Vector2 moveDirection = Vector2.zero;
     private Vector2 mousePosition = Vector2.zero;
 
@@ -34,11 +37,10 @@ public class PlayerController : MonoBehaviour
     void ProcessInputs()
     {
         // Get input from the horizontal and vertical axis (WASD by default).
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveY = Input.GetAxisRaw("Vertical");
-
-        // Combine these inputs into a Vector2 direction.
-        moveDirection = new Vector2(moveX, moveY).normalized;
+        if (isPlayer1)
+            moveDirection = new Vector2(Input.GetAxis("Player1Horizontal"), Input.GetAxis("Player1Vertical")).normalized;
+        else
+            moveDirection = new Vector2(Input.GetAxis("Player2Horizontal"), Input.GetAxis("Player2Vertical")).normalized;
     }
 
     void Move()

@@ -98,11 +98,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  fireRate: 1
+  fireRate: 2
   reloadSpeed: 1
-  magsLeft: 3
-  magSize: 5
-  spread: 5
+  magsLeft: 5
+  magSize: 10
+  spread: 6.9
   pellets: 1
-  bulletSpeed: 3
+  bulletSpeed: 6.9
   bulletPrefab: {fileID: 3106169933513278789, guid: 93991dd94e78bb740a5e7a497b7150f7, type: 3}
