@@ -122,7 +122,7 @@ public class PlayerMerge : MonoBehaviour
             else
             {
                 // When ready to merge again
-                mergeSlider.value = mergeLength; // Keep the slider full to indicate readiness
+                mergeSlider.value = cooldown; // Keep the slider full to indicate readiness
                 mergeSlider.fillRect.GetComponentInChildren<Image>().color = readyColor;
             }
         }
