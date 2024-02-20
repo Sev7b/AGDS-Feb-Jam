@@ -12,8 +12,15 @@ public class Bullet : MonoBehaviour
         Invoke(nameof(DestroySelf), 10f);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(!collision.CompareTag("Player") && !collision.CompareTag("Bullet"))
+            DestroySelf();
+    }
+
     private void DestroySelf()
     {
         Destroy(gameObject);
     }
+
 }
