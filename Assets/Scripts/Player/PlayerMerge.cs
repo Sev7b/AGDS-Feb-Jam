@@ -49,6 +49,8 @@ public class PlayerMerge : MonoBehaviour
 
     void TryMergePlayers()
     {
+        if (!player1.gameObject.activeSelf || !player2.gameObject.activeSelf) return;
+
         float distance = Vector3.Distance(player1.transform.position, player2.transform.position);
         if (distance <= mergeDistance)
         {

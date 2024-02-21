@@ -42,7 +42,10 @@ public class ShootingEnemy : Enemy
             if (!target.gameObject.activeSelf)
             {
                 players = GameObject.FindGameObjectsWithTag("Player");
-                target = players[Random.Range(0, players.Length)].transform;
+                if (players.Length > 0)
+                    target = players[Random.Range(0, players.Length - 1)].transform;
+                else
+                    target = null;
             }
 
             if (distanceToTarget < shootingDistance || shooting)
