@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [Header("Base Enemy Stats")]
     public float minSpeed;
     public float maxSpeed;
     [HideInInspector] public float speed;
@@ -12,19 +11,25 @@ public class Enemy : MonoBehaviour
 
     public int damage;
 
-    #region Private Variables
+    public float mergeChargeOnKill; // Merge cooldown decreased in seconds when killing this enemy
 
-    private GameObject[] players;
+    #region Protected Variables
 
-    private Transform target;
+    protected GameObject[] players;
 
-    private Transform currentTarget;
+    protected Transform target;
+
+    protected Transform currentTarget;
+
+    protected PlayerMerge mergeManager;
 
     #endregion
 
     // Start is called before the first frame update
-    void Awake()
+    virtual public void Awake()
     {
+        mergeManager = GameObject.Find("MergeManager").GetComponent<PlayerMerge>(); 
+
         players = GameObject.FindGameObjectsWithTag("Player");
         target = players[Random.Range(0, players.Length)].transform;
 
@@ -62,6 +67,7 @@ public class Enemy : MonoBehaviour
         health -= damage;
         if(health <= 0)
         {
+            mergeManager.DecreaseTimer(mergeChargeOnKill);
             Destroy(gameObject);
         }
     }
@@ -70,6 +76,7 @@ public class Enemy : MonoBehaviour
     {
         if(collision.transform.CompareTag("Player"))
         {
+            collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage);
             Destroy(gameObject);
         }
     }

@@ -23,6 +23,8 @@ public class Weapon : MonoBehaviour
     public float bulletSpeed;
 
     [Space]
+    public Transform bulletParent;
+
     public GameObject bulletPrefab;
 
     #region Private Variables
@@ -39,6 +41,8 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
+        bulletParent = GameObject.Find("Bullets").transform;
+
         ammoLeft = magSize;
 
         spread /= 100f;
@@ -71,7 +75,7 @@ public class Weapon : MonoBehaviour
             for (int i = 0; i < pellets; i++)
             {
                 // Instantiate bullet
-                GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+                GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity, bulletParent);
                 Bullet bulletScript = bullet.GetComponent<Bullet>();
 
                 // Randomize spread

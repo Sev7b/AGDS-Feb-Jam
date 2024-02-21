@@ -11,8 +11,8 @@ public class PlayerMerge : MonoBehaviour
 
     [Header("Stats")]
     public float mergeDistance; // Distance within which players can merge
-    public float cooldown;
-    public float mergeLength; // Cooldown duration in seconds
+    public float cooldown; // Cooldown duration in seconds
+    public float mergeLength; // Duration of the merge state
 
     [Header("UI Elements")]
     public Slider mergeSlider; // Assign this in the inspector
@@ -22,29 +22,23 @@ public class PlayerMerge : MonoBehaviour
 
     [HideInInspector] public bool isMerged = false;
 
-    #region Private Variables
-
-    private float lastMergeTime = 0f;
-
-    #endregion
+    private float lastMergeTime = -Mathf.Infinity; // Initialize to a large negative to start on cooldown
+    private float timeSinceLastMerge;
 
     private void Start()
     {
-        lastMergeTime = Time.time;
-
         if (mergeSlider != null)
         {
             mergeSlider.maxValue = cooldown;
-            mergeSlider.value = 0;
-
             mergeSlider.fillRect.GetComponentInChildren<Image>().color = cooldownColor;
         }
+
+        // Set the initial slider state to reflect the cooldown status at game start
+        ResetCooldown();
     }
 
-
-    void Update()
+    private void Update()
     {
-        // Check if Q is pressed and if the cooldown has elapsed
         if (Input.GetKeyDown(KeyCode.Q) && Time.time >= lastMergeTime + cooldown && !isMerged)
         {
             TryMergePlayers();
@@ -73,10 +67,8 @@ public class PlayerMerge : MonoBehaviour
 
     IEnumerator UnmergeAfterDelay()
     {
-        // Wait for mergeLength seconds
         yield return new WaitForSeconds(mergeLength);
 
-        // Call UnmergePlayers if still merged
         if (isMerged)
         {
             UnmergePlayers();
@@ -85,19 +77,18 @@ public class PlayerMerge : MonoBehaviour
 
     void UnmergePlayers()
     {
-        // Ensure there's a merged player instance to unmerge
         if (mergedPlayer.activeSelf)
         {
             player1.SetActive(true);
             player2.SetActive(true);
 
             player1.transform.position = mergedPlayer.transform.position + Vector3.left;
-            player2.transform.position = mergedPlayer.transform.position + Vector3.right; 
+            player2.transform.position = mergedPlayer.transform.position + Vector3.right;
 
             mergedPlayer.SetActive(false);
 
             isMerged = false;
-            lastMergeTime = Time.time;
+            ResetCooldown();
         }
     }
 
@@ -105,27 +96,49 @@ public class PlayerMerge : MonoBehaviour
     {
         if (mergeSlider != null)
         {
-            float timeSinceLastMerge = Time.time - lastMergeTime;
+            timeSinceLastMerge = Time.time - lastMergeTime;
             if (isMerged)
             {
-                // During merge, show the remaining merge duration
                 mergeSlider.maxValue = mergeLength;
                 mergeSlider.value = mergeLength - timeSinceLastMerge;
                 mergeSlider.fillRect.GetComponentInChildren<Image>().color = mergeColor;
             }
             else if (timeSinceLastMerge < cooldown)
             {
-                // Show the cooldown progress
                 mergeSlider.maxValue = cooldown;
                 mergeSlider.value = timeSinceLastMerge;
                 mergeSlider.fillRect.GetComponentInChildren<Image>().color = cooldownColor;
             }
             else
             {
-                // When ready to merge again
-                mergeSlider.value = cooldown; // Keep the slider full to indicate readiness
+                mergeSlider.value = cooldown;
                 mergeSlider.fillRect.GetComponentInChildren<Image>().color = readyColor;
             }
+        }
+    }
+
+    public void DecreaseTimer(float amount)
+    {
+        if (!isMerged)
+        {
+            // Decrease the last merge time to reduce the cooldown
+            lastMergeTime -= amount;
+
+            // Ensure we don't go beyond the current time, making it immediately available
+            lastMergeTime = Mathf.Max(lastMergeTime, Time.time - cooldown);
+
+            // Update the UI elements if necessary
+            UpdateSlider();
+        }
+    }
+
+    private void ResetCooldown()
+    {
+        // To start on cooldown, simulate that the last merge just happened
+        lastMergeTime = Time.time;
+        if (mergeSlider != null)
+        {
+            mergeSlider.value = 0; // Start with the slider empty or at the beginning of the cooldown
         }
     }
 }

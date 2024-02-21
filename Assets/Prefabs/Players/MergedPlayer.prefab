@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8538017699462978851}
   - component: {fileID: 8950546680672066964}
   - component: {fileID: 2886003496779231428}
+  - component: {fileID: 8070467105815496462}
   - component: {fileID: 2197651505897919035}
   m_Layer: 0
   m_Name: MergedPlayer
@@ -151,6 +152,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &8070467105815496462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167952583589390858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2c4bd6aa1522644be30fec04912b82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 999
 --- !u!114 &2197651505897919035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,4 +365,5 @@ MonoBehaviour:
   spread: 15
   pellets: 1
   bulletSpeed: 10
+  bulletParent: {fileID: 0}
   bulletPrefab: {fileID: 3106169933513278789, guid: 93991dd94e78bb740a5e7a497b7150f7, type: 3}

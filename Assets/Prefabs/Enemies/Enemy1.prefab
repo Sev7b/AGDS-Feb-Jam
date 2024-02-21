@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2656964344097320928}
   - component: {fileID: 3814010642194315770}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,8 +175,9 @@ MonoBehaviour:
   minSpeed: 1
   maxSpeed: 3
   speed: 0
-  health: 1
+  health: 2
   damage: 1
+  mergeChargeOnKill: 3
 --- !u!1 &7863560899750930688
 GameObject:
   m_ObjectHideFlags: 0

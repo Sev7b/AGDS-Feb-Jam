@@ -11,8 +11,11 @@ public class WaveManager : MonoBehaviour
         public float waveDelay; // Time in seconds until next wave
         public float enemyRate; // Time between enemy spawns
         public int amountOfEnemies;
+        [Tooltip("The more prefabs you include in the enemyTypes array will increase how likely they are to spawn.")]
         public GameObject[] enemyTypes;
     }
+
+    public Transform enemyParent;
 
     public List<Wave> waves;
     public Transform spawnPoint; // Assign a spawn point in the inspector
@@ -61,7 +64,7 @@ public class WaveManager : MonoBehaviour
         }
 
         GameObject enemyToSpawn = wave.enemyTypes[UnityEngine.Random.Range(0, wave.enemyTypes.Length)];
-        Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
+        Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity, enemyParent);
     }
 
     Vector2 CalculateSpawnPosition()
