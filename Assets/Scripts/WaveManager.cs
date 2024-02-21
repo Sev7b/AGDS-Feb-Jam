@@ -67,8 +67,7 @@ public class WaveManager : MonoBehaviour
     Vector2 CalculateSpawnPosition()
     {
         float angle = UnityEngine.Random.Range(0f, 360f) * Mathf.Deg2Rad;
-        float distance = UnityEngine.Random.Range(20f, 25f);
-        Vector2 offset = new Vector2(Mathf.Cos(angle) * distance, Mathf.Sin(angle) * distance);
+        Vector2 offset = new Vector2(Mathf.Cos(angle) * 25f, Mathf.Sin(angle) * 25f);
         return (Vector2)transform.position + offset;
     }
 
