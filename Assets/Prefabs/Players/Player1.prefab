@@ -247,6 +247,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPlayer1: 1
   moveSpeed: 5
+  dashForce: 20
+  dashCooldown: 0
+  dashDuration: 0.2
 --- !u!1001 &2037571281402498629
 PrefabInstance:
   m_ObjectHideFlags: 0

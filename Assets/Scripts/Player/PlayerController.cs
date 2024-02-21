@@ -5,12 +5,19 @@ public class PlayerController : MonoBehaviour
     public bool isPlayer1;
 
     public float moveSpeed = 5f;
+    public float dashForce = 15f; // The force added to the player on dashing
+    public float dashCooldown = 2f; // Cooldown duration in seconds
+    public float dashDuration = 0.5f; // Duration of the dash in seconds
 
     #region Private Variables
 
     private Rigidbody2D rb;
     private Vector2 moveDirection = Vector2.zero;
     private Vector2 mousePosition = Vector2.zero;
+
+    private float lastDashTime = -10f;
+    private bool isDashing = false; // Indicates if the player is currently dashing
+    private float dashEndTime = -1f; // When the current dash ends
 
     #endregion
 
@@ -25,21 +32,36 @@ public class PlayerController : MonoBehaviour
 
         // Calculate mouse position in world space
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // Check if dash duration has ended
+        if (isDashing && Time.time >= dashEndTime)
+        {
+            isDashing = false;
+        }
     }
 
     void FixedUpdate()
     {
-        Move();
+        if (!isDashing) // Only move based on input if not dashing
+        {
+            Move();
+        }
+
         RotateTowardsMouse();
     }
 
     void ProcessInputs()
     {
-        // Get input from the horizontal and vertical axis (WASD by default).
         if (isPlayer1)
             moveDirection = new Vector2(Input.GetAxisRaw("Player1Horizontal"), Input.GetAxisRaw("Player1Vertical")).normalized;
         else
             moveDirection = new Vector2(Input.GetAxisRaw("Player2Horizontal"), Input.GetAxisRaw("Player2Vertical")).normalized;
+
+        // Dash on 'E' press if cooldown is over
+        if (Input.GetKeyDown(KeyCode.E) && Time.time >= lastDashTime + dashCooldown)
+        {
+            Dash();
+        }
     }
 
     void Move()
@@ -54,9 +76,21 @@ public class PlayerController : MonoBehaviour
         Vector2 direction = mousePosition - rb.position;
 
         // Calculate the angle to rotate towards in degrees
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; 
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         // Apply rotation towards the mouse position
         rb.rotation = angle;
+    }
+
+    void Dash()
+    {
+        isDashing = true;
+        dashEndTime = Time.time + dashDuration;
+        lastDashTime = Time.time;
+
+        if (moveDirection != Vector2.zero)
+            rb.AddForce(moveDirection * dashForce, ForceMode2D.Impulse); // Apply dash force in the direction of movement
+        else
+            rb.AddForce((mousePosition - rb.position).normalized * (dashForce / 1.5f), ForceMode2D.Impulse); // Fallback dash direction if no input direction
     }
 }
