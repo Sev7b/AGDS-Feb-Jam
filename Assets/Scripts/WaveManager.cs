@@ -29,21 +29,20 @@ public class WaveManager : MonoBehaviour
     {
         foreach (Wave wave in waves)
         {
-            yield return new WaitForSeconds(wave.waveDelay); 
+            yield return new WaitForSeconds(wave.waveDelay);
 
             for (int i = 0; i < wave.amountOfEnemies; i++)
             {
                 SpawnEnemy(wave);
-                yield return new WaitForSeconds(wave.enemyRate); 
+                yield return new WaitForSeconds(wave.enemyRate);
             }
 
             while (GameObject.FindWithTag("Enemy") != null)
             {
-                // Wait for all enemies to be destroyed before continuing to the next wave, can change how this works
                 yield return null;
             }
 
-            waveNumber++; // Increment the wave number after all enemies are destroyed
+            waveNumber++;
         }
 
         OnAllWavesCompleted();
@@ -53,28 +52,38 @@ public class WaveManager : MonoBehaviour
     {
         if (wave.enemyTypes.Length == 0) return;
 
-        // Select a random enemy type to spawn
-        GameObject enemyToSpawn = wave.enemyTypes[UnityEngine.Random.Range(0, wave.enemyTypes.Length)];
-
-        // Generate a random position that's 20 to 30 units away from this GameObject
         Vector2 spawnPosition = CalculateSpawnPosition();
 
+        // Check if the spawn position is too close to another enemy, retry if necessary
+        while (IsPositionNearEnemy(spawnPosition))
+        {
+            spawnPosition = CalculateSpawnPosition();
+        }
+
+        GameObject enemyToSpawn = wave.enemyTypes[UnityEngine.Random.Range(0, wave.enemyTypes.Length)];
         Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
     }
 
     Vector2 CalculateSpawnPosition()
     {
-        // Generate a random direction
-        float angle = UnityEngine.Random.Range(0f, 360f) * Mathf.Deg2Rad; 
-
-        // Generate a random distance within the specified range
+        float angle = UnityEngine.Random.Range(0f, 360f) * Mathf.Deg2Rad;
         float distance = UnityEngine.Random.Range(20f, 25f);
-
-        // Calculate offset from the reference point
         Vector2 offset = new Vector2(Mathf.Cos(angle) * distance, Mathf.Sin(angle) * distance);
-
-        // Calculate and return the spawn position
         return (Vector2)transform.position + offset;
+    }
+
+    // Check if the given position is within 10 units of any enemy
+    bool IsPositionNearEnemy(Vector2 position)
+    {
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(position, 2f);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.gameObject.CompareTag("Enemy"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     void OnAllWavesCompleted()

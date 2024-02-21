@@ -14,8 +14,14 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(!collision.CompareTag("Player") && !collision.CompareTag("Bullet"))
+        if (!collision.CompareTag("Player") && !collision.CompareTag("Bullet"))
+        {
             DestroySelf();
+            if(collision.CompareTag("Enemy"))
+            {
+                collision.GetComponent<Enemy>().TakeDamage(damage);
+            }
+        }
     }
 
     private void DestroySelf()

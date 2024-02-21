@@ -37,9 +37,9 @@ public class PlayerController : MonoBehaviour
     {
         // Get input from the horizontal and vertical axis (WASD by default).
         if (isPlayer1)
-            moveDirection = new Vector2(Input.GetAxis("Player1Horizontal"), Input.GetAxis("Player1Vertical")).normalized;
+            moveDirection = new Vector2(Input.GetAxisRaw("Player1Horizontal"), Input.GetAxisRaw("Player1Vertical")).normalized;
         else
-            moveDirection = new Vector2(Input.GetAxis("Player2Horizontal"), Input.GetAxis("Player2Vertical")).normalized;
+            moveDirection = new Vector2(Input.GetAxisRaw("Player2Horizontal"), Input.GetAxisRaw("Player2Vertical")).normalized;
     }
 
     void Move()
