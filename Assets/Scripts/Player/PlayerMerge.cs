@@ -20,9 +20,10 @@ public class PlayerMerge : MonoBehaviour
     public Color mergeColor; // Color during merge
     public Color readyColor; // Color when merge is ready
 
+    [HideInInspector] public bool isMerged = false;
+
     #region Private Variables
 
-    private bool isMerged = false;
     private float lastMergeTime = 0f;
 
     #endregion
