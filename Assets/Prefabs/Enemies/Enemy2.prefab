@@ -263,6 +263,7 @@ MonoBehaviour:
   health: 1
   damage: 3
   mergeChargeOnKill: 5
+  deathEffect: {fileID: 4570882191875647136, guid: 5c61b2c2574ab0b449f1dd6d8922661d, type: 3}
   shootingDistance: 10
   fireRate: 0.5
   spread: 10

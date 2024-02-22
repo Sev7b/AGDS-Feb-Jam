@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,13 +10,15 @@ public class PlayerController : MonoBehaviour
     public float dashCooldown = 2f; // Cooldown duration in seconds
     public float dashDuration = 0.5f; // Duration of the dash in seconds
 
+    public Slider dashSlider;
+
     #region Private Variables
 
     private Rigidbody2D rb;
     private Vector2 moveDirection = Vector2.zero;
     private Vector2 mousePosition = Vector2.zero;
 
-    private float lastDashTime = -10f;
+    private float lastDashTime = -100f;
     private bool isDashing = false; // Indicates if the player is currently dashing
     private float dashEndTime = -1f; // When the current dash ends
 
@@ -24,6 +27,13 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        if (dashSlider != null)
+        {
+            dashSlider.minValue = 0;
+            dashSlider.maxValue = dashCooldown;
+            dashSlider.value = dashSlider.maxValue;
+        }
     }
 
     void Update()
@@ -38,6 +48,9 @@ public class PlayerController : MonoBehaviour
         {
             isDashing = false;
         }
+
+        if (dashSlider != null)
+            UpdateDashSlider();
     }
 
     void FixedUpdate()
@@ -92,5 +105,21 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(moveDirection * dashForce, ForceMode2D.Impulse); // Apply dash force in the direction of movement
         else
             rb.AddForce((mousePosition - rb.position).normalized * (dashForce / 1.5f), ForceMode2D.Impulse); // Fallback dash direction if no input direction
+    }
+
+    void UpdateDashSlider()
+    {
+        // Calculate the cooldown progress
+        float timeSinceLastDash = Time.time - lastDashTime;
+        float cooldownProgress = Mathf.Clamp(timeSinceLastDash / dashCooldown, 0, dashCooldown);
+
+        // Update the slider's value to reflect the cooldown progress
+        dashSlider.value = cooldownProgress;
+
+        // If the dash is ready, ensure the slider is full
+        if (cooldownProgress >= dashCooldown)
+        {
+            dashSlider.value = dashCooldown;
+        }
     }
 }

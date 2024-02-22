@@ -13,6 +13,9 @@ public class Enemy : MonoBehaviour
 
     public float mergeChargeOnKill; // Merge cooldown decreased in seconds when killing this enemy
 
+    [Header("Effects")]
+    public GameObject deathEffect;
+
     #region Protected Variables
 
     protected GameObject[] players;
@@ -22,6 +25,8 @@ public class Enemy : MonoBehaviour
     protected Transform currentTarget;
 
     protected PlayerMerge mergeManager;
+
+    protected bool turnedAround = false;
 
     #endregion
 
@@ -39,16 +44,13 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     virtual public void Update()
     {
-        // Check if the target exists
         if (target != null)
         {
-            if(!target.gameObject.activeSelf)
+            // Check if the target is active
+            if (!target.gameObject.activeSelf)
             {
                 players = GameObject.FindGameObjectsWithTag("Player");
-                if(players.Length > 0)
-                    target = players[Random.Range(0, players.Length-1)].transform;
-                else
-                    target = null;
+                target = players.Length > 0 ? players[Random.Range(0, players.Length)].transform : null;
             }
 
             // Move the enemy towards the player
@@ -63,7 +65,18 @@ public class Enemy : MonoBehaviour
             // Apply the rotation, -90 to assure the enemy is facing the right way
             transform.rotation = Quaternion.Euler(0f, 0f, angle - 90);
         }
+        else
+        {
+            if (!turnedAround)
+            {
+                transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + 180);
+                turnedAround = true;
+            }
+
+            transform.position += transform.up * speed * Time.deltaTime;
+        }
     }
+
 
     public void TakeDamage(int damage)
     {
@@ -71,6 +84,7 @@ public class Enemy : MonoBehaviour
         if(health <= 0)
         {
             mergeManager.DecreaseTimer(mergeChargeOnKill);
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
@@ -80,6 +94,7 @@ public class Enemy : MonoBehaviour
         if(collision.transform.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage);
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }

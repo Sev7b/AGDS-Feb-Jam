@@ -12,7 +12,7 @@ public class EnemyBullet : Bullet
             {
                 collision.GetComponent<PlayerHealth>().TakeDamage(damage);
             }
-            DestroySelf();
+            Destroy(gameObject);
         }
     }
 }

@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 5
+  deathEffect: {fileID: 4570882191875647136, guid: baeff04e465c7b84c8fe63da3561b505, type: 3}
 --- !u!114 &5981917306366406497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,8 +181,9 @@ MonoBehaviour:
   isPlayer1: 0
   moveSpeed: 5
   dashForce: 20
-  dashCooldown: 0
+  dashCooldown: 5
   dashDuration: 0.2
+  dashSlider: {fileID: 0}
 --- !u!1 &4461963707548802655
 GameObject:
   m_ObjectHideFlags: 0

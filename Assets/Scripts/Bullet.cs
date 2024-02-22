@@ -7,11 +7,6 @@ public class Bullet : MonoBehaviour
     [HideInInspector] public int damage;
     [HideInInspector] public float speed;
 
-    private void Awake()
-    {
-        Invoke(nameof(DestroySelf), 10f);
-    }
-
     virtual public void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player") && !collision.CompareTag("Bullet"))
@@ -20,13 +15,7 @@ public class Bullet : MonoBehaviour
             {
                 collision.GetComponent<Enemy>().TakeDamage(damage);
             }
-            DestroySelf();
+            Destroy(gameObject);
         }
     }
-
-    public void DestroySelf()
-    {
-        Destroy(gameObject);
-    }
-
 }
