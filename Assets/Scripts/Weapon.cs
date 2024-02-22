@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Weapon : MonoBehaviour
 {
@@ -12,8 +13,6 @@ public class Weapon : MonoBehaviour
 
     public float reloadSpeed;
 
-    public int magsLeft;
-
     public int magSize;
 
     public float spread;
@@ -23,11 +22,15 @@ public class Weapon : MonoBehaviour
     public float bulletSpeed;
 
     [Space]
-    public Transform bulletParent;
-
     public GameObject bulletPrefab;
 
+    public TextMeshProUGUI ammoLeftText;
+
+    public Slider reloadSlider;
+
     #region Private Variables
+
+    private Transform bulletParent;
 
     private float nextFire = 0f;
 
@@ -50,25 +53,26 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        shooting = Input.GetMouseButton(0);
-        reloading = Input.GetKeyDown(KeyCode.R);
-
-        if (shooting && Time.time >= nextFire && ammoLeft > 0 && !reloading)
+        if (Input.GetMouseButton(0) && Time.time >= nextFire && ammoLeft > 0 && !reloading)
         {
             nextFire = Time.time + 1f / fireRate;
             Fire();
         }
 
-        if (reloading)
+        if (Input.GetKeyDown(KeyCode.R))
         {
             Reload();
         }
+
+        ammoLeftText.text = ammoLeft.ToString();
+
+        reloadSlider.maxValue = magSize;
+        reloadSlider.value = ammoLeft;
     }
 
     private void Fire()
     {
         ammoLeft--;
-        Debug.Log("Ammo Left: " + ammoLeft);
 
         if (ammoLeft >= 0)
         {
@@ -105,10 +109,27 @@ public class Weapon : MonoBehaviour
 
     private void Reload()
     {
-        if (magsLeft > 0)
+        if (!reloading)
         {
-            ammoLeft = magSize;
-            magSize--;
+            StartCoroutine(ReloadRoutine());
         }
     }
+
+    IEnumerator ReloadRoutine()
+    {
+        reloading = true;
+
+        while (ammoLeft < magSize)
+        {
+            ammoLeft++;
+            yield return new WaitForSeconds(reloadSpeed);
+        }
+
+        ammoLeft = magSize;
+
+        yield return new WaitForSeconds(1f);
+
+        reloading = false;
+    }
+
 }

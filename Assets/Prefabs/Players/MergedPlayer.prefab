@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 999
+  deathEffect: {fileID: 0}
 --- !u!114 &2197651505897919035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,10 +361,10 @@ MonoBehaviour:
   damage: 5
   fireRate: 10
   reloadSpeed: 2
-  magsLeft: 999
   magSize: 999
   spread: 15
   pellets: 1
   bulletSpeed: 10
-  bulletParent: {fileID: 0}
   bulletPrefab: {fileID: 3106169933513278789, guid: 93991dd94e78bb740a5e7a497b7150f7, type: 3}
+  ammoLeftText: {fileID: 0}
+  reloadSlider: {fileID: 0}
