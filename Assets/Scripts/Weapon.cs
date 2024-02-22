@@ -74,6 +74,7 @@ public class Weapon : MonoBehaviour
         {
             for (int i = 0; i < pellets; i++)
             {
+                PlayerController player = GetComponentInParent<PlayerController>();
                 // Instantiate bullet
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity, bulletParent);
                 Bullet bulletScript = bullet.GetComponent<Bullet>();
@@ -84,6 +85,7 @@ public class Weapon : MonoBehaviour
 
                 Vector2 direction = new Vector2(transform.up.x + spreadFactorX, transform.up.y + spreadFactorY);
                 // Set bullet's properties
+                bulletScript.isPlayer1s = player.isPlayer1;
                 bulletScript.speed = bulletSpeed;
                 bulletScript.damage = damage;
 

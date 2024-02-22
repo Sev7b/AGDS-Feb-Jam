@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class Enemy : MonoBehaviour
 {
@@ -11,9 +12,10 @@ public class Enemy : MonoBehaviour
 
     public int damage;
 
+    public float scoreOnKill;
     public float mergeChargeOnKill; // Merge cooldown decreased in seconds when killing this enemy
 
-    [Header("Effects")]
+    [Header("GUI")]
     public GameObject deathEffect;
 
     #region Protected Variables
@@ -25,6 +27,7 @@ public class Enemy : MonoBehaviour
     protected Transform currentTarget;
 
     protected PlayerMerge mergeManager;
+    protected GameManager gameManager;
 
     protected bool turnedAround = false;
 
@@ -33,6 +36,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     virtual public void Awake()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         mergeManager = GameObject.Find("MergeManager").GetComponent<PlayerMerge>(); 
 
         players = GameObject.FindGameObjectsWithTag("Player");
@@ -78,11 +82,16 @@ public class Enemy : MonoBehaviour
     }
 
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool isPlayer1s)
     {
         health -= damage;
         if(health <= 0)
         {
+            if (isPlayer1s)
+                GameManager.player1Score += scoreOnKill;
+            else
+                GameManager.player2Score += scoreOnKill;
+
             mergeManager.DecreaseTimer(mergeChargeOnKill);
             Instantiate(deathEffect, transform.position, Quaternion.identity);
             Destroy(gameObject);
