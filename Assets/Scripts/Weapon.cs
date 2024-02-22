@@ -85,7 +85,16 @@ public class Weapon : MonoBehaviour
 
                 Vector2 direction = new Vector2(transform.up.x + spreadFactorX, transform.up.y + spreadFactorY);
                 // Set bullet's properties
-                bulletScript.isPlayer1s = player.isPlayer1;
+                if (player != null)
+                {
+                    if (player.isPlayer1)
+                        bulletScript.playerSource = 1;
+                    else if (!player.isPlayer1)
+                        bulletScript.playerSource = 2;
+                }
+                else
+                    bulletScript.playerSource = 3;
+
                 bulletScript.speed = bulletSpeed;
                 bulletScript.damage = damage;
 

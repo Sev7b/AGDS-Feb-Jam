@@ -10,7 +10,6 @@ public class MergedPlayerController : MonoBehaviour
 
     private Vector2 moveDirection = Vector2.zero;
     private Vector2 player1MoveDirection = Vector2.zero;
-    private Vector2 player2MoveDirection = Vector2.zero;
 
     private Vector2 mousePosition = Vector2.zero;
 
@@ -37,10 +36,9 @@ public class MergedPlayerController : MonoBehaviour
 
     void ProcessInputs()
     {
-        player1MoveDirection = new Vector2(Input.GetAxis("Player1Horizontal"), Input.GetAxis("Player1Vertical"));
-        player2MoveDirection = new Vector2(Input.GetAxis("Player2Horizontal"), Input.GetAxis("Player2Vertical"));
+        player1MoveDirection = new Vector2(Input.GetAxisRaw("Player1Horizontal"), Input.GetAxisRaw("Player1Vertical"));
 
-        moveDirection = (player1MoveDirection + player2MoveDirection).normalized;
+        moveDirection = player1MoveDirection.normalized;
     }
 
     void Move()

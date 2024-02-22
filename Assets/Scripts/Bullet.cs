@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public bool isPlayer1s;
+    public int playerSource;
     [HideInInspector] public int damage;
     [HideInInspector] public float speed;
 
@@ -14,7 +14,7 @@ public class Bullet : MonoBehaviour
         {
             if(collision.CompareTag("Enemy"))
             {
-                collision.GetComponent<Enemy>().TakeDamage(damage, isPlayer1s);
+                collision.GetComponent<Enemy>().TakeDamage(damage, playerSource);
             }
             Destroy(gameObject);
         }

@@ -2010,7 +2010,7 @@ MonoBehaviour:
   player2: {fileID: 1786059560}
   mergedPlayer: {fileID: 155650375}
   mergeDistance: 2
-  cooldown: 60
+  cooldown: 5
   mergeLength: 5
   mergeSlider: {fileID: 221385307}
   cooldownColor: {r: 0, g: 0, b: 0.754717, a: 1}

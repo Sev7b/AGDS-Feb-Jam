@@ -82,15 +82,20 @@ public class Enemy : MonoBehaviour
     }
 
 
-    public void TakeDamage(int damage, bool isPlayer1s)
+    public void TakeDamage(int damage, int playerSource)
     {
         health -= damage;
         if(health <= 0)
         {
-            if (isPlayer1s)
+            if (playerSource == 1)
                 GameManager.player1Score += scoreOnKill;
-            else
+            else if (playerSource == 2)
                 GameManager.player2Score += scoreOnKill;
+            else
+            {
+                GameManager.player1Score += scoreOnKill;
+                GameManager.player2Score += scoreOnKill;
+            }
 
             mergeManager.DecreaseTimer(mergeChargeOnKill);
             Instantiate(deathEffect, transform.position, Quaternion.identity);
