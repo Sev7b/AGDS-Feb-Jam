@@ -2079,10 +2079,21 @@ MonoBehaviour:
   enemyParent: {fileID: 814552315}
   waves:
   - waveDelay: 5
+    enemyRate: 1
+    enemySpawns:
+    - enemyPrefab: {fileID: 3879197448267858794, guid: 793d7a53b39466441ac08605096c0eb2, type: 3}
+      spawnAmount: 2
+    - enemyPrefab: {fileID: 6648855066919921573, guid: 03241b1f08612da4a94d38a77fe1e610, type: 3}
+      spawnAmount: 1
+    - enemyPrefab: {fileID: 5080507641103923464, guid: 8192349f50f317d43a6a82b288d2a530, type: 3}
+      spawnAmount: 5
+  - waveDelay: 5
     enemyRate: 0.1
-    amountOfEnemies: 20
-    enemyTypes:
-    - {fileID: 3879197448267858794, guid: 793d7a53b39466441ac08605096c0eb2, type: 3}
+    enemySpawns:
+    - enemyPrefab: {fileID: 4625332175506994350, guid: 1b53925edefa1ab4e8c3610cecc7bdf2, type: 3}
+      spawnAmount: 5
+    - enemyPrefab: {fileID: 4608994144931291531, guid: ffa35628419464f49b239a1de3786201, type: 3}
+      spawnAmount: 1
   spawnPoint: {fileID: 1482195925}
 --- !u!1 &1025381468
 GameObject:
@@ -3370,7 +3381,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -10
   m_Sprite: {fileID: 7482667652216324306, guid: 7d8eeefc69c90e2448c2416206560b27, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.019607844, b: 0.03137255, a: 0.48235294}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

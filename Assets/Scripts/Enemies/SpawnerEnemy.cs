@@ -32,15 +32,6 @@ public class SpawnerEnemy : Enemy
         {
             float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-            // Find the direction towards the target
-            Vector2 direction = (target.position - transform.position).normalized;
-
-            // Calculate the angle to the target
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-            // Apply the rotation, -90 to assure the enemy is facing the right way
-            transform.rotation = Quaternion.Euler(0f, 0f, angle - 90);
-
             if (!target.gameObject.activeSelf)
             {
                 players = GameObject.FindGameObjectsWithTag("Player");

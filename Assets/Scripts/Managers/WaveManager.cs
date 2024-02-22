@@ -6,14 +6,20 @@ using UnityEngine;
 public class WaveManager : MonoBehaviour
 {
     [Serializable]
+    public struct EnemySpawnInfo
+    {
+        public GameObject enemyPrefab;
+        public int spawnAmount;
+    }
+
+    [Serializable]
     public struct Wave
     {
         public float waveDelay; // Time in seconds until next wave
         public float enemyRate; // Time between enemy spawns
-        public int amountOfEnemies;
-        [Tooltip("The more prefabs you include in the enemyTypes array will increase how likely they are to spawn.")]
-        public GameObject[] enemyTypes;
+        public List<EnemySpawnInfo> enemySpawns; // New field replacing amountOfEnemies and enemyTypes
     }
+
 
     public Transform enemyParent;
 
@@ -34,10 +40,13 @@ public class WaveManager : MonoBehaviour
         {
             yield return new WaitForSeconds(wave.waveDelay);
 
-            for (int i = 0; i < wave.amountOfEnemies; i++)
+            foreach (EnemySpawnInfo enemySpawn in wave.enemySpawns)
             {
-                SpawnEnemy(wave);
-                yield return new WaitForSeconds(wave.enemyRate);
+                for (int i = 0; i < enemySpawn.spawnAmount; i++)
+                {
+                    SpawnEnemy(enemySpawn.enemyPrefab);
+                    yield return new WaitForSeconds(wave.enemyRate);
+                }
             }
 
             while (GameObject.FindWithTag("Enemy") != null)
@@ -51,10 +60,8 @@ public class WaveManager : MonoBehaviour
         OnAllWavesCompleted();
     }
 
-    void SpawnEnemy(Wave wave)
+    void SpawnEnemy(GameObject enemyPrefab)
     {
-        if (wave.enemyTypes.Length == 0) return;
-
         Vector2 spawnPosition = CalculateSpawnPosition();
 
         // Check if the spawn position is too close to another enemy, retry if necessary
@@ -63,9 +70,9 @@ public class WaveManager : MonoBehaviour
             spawnPosition = CalculateSpawnPosition();
         }
 
-        GameObject enemyToSpawn = wave.enemyTypes[UnityEngine.Random.Range(0, wave.enemyTypes.Length)];
-        Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity, enemyParent);
+        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, enemyParent);
     }
+
 
     Vector2 CalculateSpawnPosition()
     {
