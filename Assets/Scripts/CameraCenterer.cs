@@ -13,6 +13,11 @@ public class CameraCenterer : MonoBehaviour
     public float minZoom = 5f;  // Minimum orthographic size (optional, based on preference)
     public float zoomSpeed = 1f; // Speed at which the camera zooms in/out
 
+    private Rigidbody2D rb;
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
     private void Update()
     {
         AdjustCameraPosition();
@@ -25,24 +30,17 @@ public class CameraCenterer : MonoBehaviour
         {
             Vector3 targetPosition = Vector3.zero;
 
-            if (player1.gameObject.activeSelf && player2.gameObject.activeSelf)
-            {
-                targetPosition = Vector3.Lerp(player1.position, player2.position, 0.5f);
-            }
-            else if (mergedPlayer != null && mergedPlayer.gameObject.activeSelf)
-            {
-                targetPosition = mergedPlayer.position;
-            }
-            else if (!player1.gameObject.activeSelf)
-            {
-                targetPosition = player2.position;
-            }
-            else
-            {
-                targetPosition = player1.position;
-            }
+            if (mergedPlayer != null && mergedPlayer.gameObject.activeSelf)            targetPosition = mergedPlayer.position;
 
-            transform.position = targetPosition;
+            else if (player1.gameObject.activeSelf && player2.gameObject.activeSelf)   targetPosition = Vector3.Lerp(player1.position, player2.position, 0.5f);
+
+            else if (!player1.gameObject.activeSelf)                                   targetPosition = player2.position;
+
+            else if (!player2.gameObject.activeSelf)                                   targetPosition = player1.position;
+             
+            else                                                                       targetPosition = Vector3.Lerp(player1.position, player2.position, 0.5f);
+
+            rb.position = targetPosition;
         }
     }
 

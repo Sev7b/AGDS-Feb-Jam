@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class WaveManager : MonoBehaviour
@@ -26,7 +27,14 @@ public class WaveManager : MonoBehaviour
     public List<Wave> waves;
     public Transform spawnPoint; // Assign a spawn point in the inspector
 
+    public TextMeshProUGUI waveNumberText;
     private int waveNumber = 0;
+
+    // Post game difficulty scaling variables
+    public GameObject[] enemyPrefabs;
+    public float difficultyMultiplier = 1.1f;
+    public int baseEnemyCount = 5;
+    public float baseEnemyRate = 2.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +46,11 @@ public class WaveManager : MonoBehaviour
     {
         foreach (Wave wave in waves)
         {
-            yield return new WaitForSeconds(wave.waveDelay);
+            waveNumberText.text = "WAVE " + (waveNumber+1);
+            waveNumberText.transform.parent.gameObject.SetActive(true);
+            yield return new WaitForSeconds(3f);
+            waveNumberText.transform.parent.gameObject.SetActive(false);
+            yield return new WaitForSeconds(wave.waveDelay - 3f);
 
             foreach (EnemySpawnInfo enemySpawn in wave.enemySpawns)
             {
@@ -97,6 +109,54 @@ public class WaveManager : MonoBehaviour
 
     void OnAllWavesCompleted()
     {
-        Debug.Log("All waves completed!");
+        Debug.Log("All predefined waves completed! Starting random waves with increasing difficulty.");
+        StartCoroutine(GenerateRandomWaves());
+    }
+
+    IEnumerator GenerateRandomWaves()
+    {
+        while (true) // Keep generating waves indefinitely
+        {
+            Wave generatedWave = GenerateRandomWave();
+            yield return new WaitForSeconds(generatedWave.waveDelay);
+
+            foreach (EnemySpawnInfo enemySpawn in generatedWave.enemySpawns)
+            {
+                for (int i = 0; i < enemySpawn.spawnAmount; i++)
+                {
+                    SpawnEnemy(enemySpawn.enemyPrefab);
+                    yield return new WaitForSeconds(generatedWave.enemyRate);
+                }
+            }
+
+            while (GameObject.FindWithTag("Enemy") != null)
+            {
+                yield return null;
+            }
+
+            // Increase difficulty for the next wave
+            baseEnemyCount = Mathf.CeilToInt(baseEnemyCount * difficultyMultiplier);
+            baseEnemyRate *= 0.95f; // Decrease spawn time to increase difficulty
+            waveNumber++;
+        }
+    }
+
+    Wave GenerateRandomWave()
+    {
+        // Generate a new wave based on the current difficulty level
+        Wave newWave = new Wave
+        {
+            waveDelay = UnityEngine.Random.Range(3f, 5f), 
+            enemyRate = Mathf.Max(baseEnemyRate, 0.5f), 
+            enemySpawns = new List<EnemySpawnInfo>()
+        };
+
+        for (int i = 0; i < baseEnemyCount; i++)
+        {
+            GameObject enemyPrefab = enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)];
+            newWave.enemySpawns.Add(new EnemySpawnInfo { enemyPrefab = enemyPrefab, spawnAmount = 1 });
+        }
+
+        return newWave;
     }
 }

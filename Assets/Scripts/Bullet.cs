@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour
 {
     public GameObject newBulletPrefab;
 
-    public int playerSource;
+    public int playerSource = 0;
     [HideInInspector] public int damage;
     [HideInInspector] public float speed;
     public Vector2 direction; 
@@ -18,7 +18,7 @@ public class Bullet : MonoBehaviour
 
     virtual public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Bullet"))
+        if (collision.CompareTag("Bullet") && playerSource != 0)
         {
             Bullet otherBullet = collision.gameObject.GetComponent<Bullet>();
             if (otherBullet != null && newBulletPrefab != null)
@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour
                 Destroy(otherBullet.gameObject);
             }
         }
-        else if (!collision.CompareTag("Player"))
+        else if (!collision.CompareTag("Player") && !collision.CompareTag("Bullet"))
         {
             if (collision.CompareTag("Enemy"))
             {

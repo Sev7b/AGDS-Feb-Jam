@@ -172,7 +172,7 @@ MonoBehaviour:
   mergeChargeOnKill: 5
   deathEffect: {fileID: 4570882191875647136, guid: 5c61b2c2574ab0b449f1dd6d8922661d, type: 3}
   shootingDistance: 5
-  fireRate: 0.5
+  fireRate: 1.2
   bulletSpeed: 2
   bulletPrefab: {fileID: 3106169933513278789, guid: 033e938a369bcc24d8192ce5bfbef0c8, type: 3}
 --- !u!111 &506573540295169914

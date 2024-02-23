@@ -257,7 +257,7 @@ MonoBehaviour:
   mergeChargeOnKill: 8
   deathEffect: {fileID: 4570882191875647136, guid: 5c61b2c2574ab0b449f1dd6d8922661d, type: 3}
   spawningDistance: 15
-  spawnCooldown: 3
+  spawnCooldown: 7
   spawnAmountMin: 3
   spawnAmountMax: 6
   enemyPrefab: {fileID: 6705364422114920811, guid: 387fb31415c3bae43a3233aa0e36efe4, type: 3}

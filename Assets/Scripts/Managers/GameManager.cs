@@ -19,6 +19,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1;
+
+        player1Score = 0;
+        player2Score = 0;
+
         gameOverUI.SetActive(false);
     }
 
