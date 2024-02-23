@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,8 +11,16 @@ public class GameManager : MonoBehaviour
     static public float player2Score;
     public TextMeshProUGUI player2ScoreText;
 
+    public GameObject gameOverUI;
+
     private GameObject[] players;
     private bool isGameOver = false;
+
+    void Start()
+    {
+        Time.timeScale = 1;
+        gameOverUI.SetActive(false);
+    }
 
     void Update()
     {
@@ -21,7 +30,7 @@ public class GameManager : MonoBehaviour
 
             if (players.Length == 0)
             {
-                StartCoroutine(LerpTimeScaleToZero(1f));
+                StartCoroutine(LerpTimeScaleToZero(2f));
                 isGameOver = true; 
             }
 
@@ -42,6 +51,6 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        SceneManager.LoadScene("Game Over"); 
+        gameOverUI.SetActive(true);
     }
 }

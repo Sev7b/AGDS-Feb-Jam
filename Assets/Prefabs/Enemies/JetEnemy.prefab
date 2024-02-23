@@ -175,8 +175,8 @@ MonoBehaviour:
   minSpeed: 4
   maxSpeed: 6
   speed: 0
-  health: 1
-  damage: 1
+  health: 3
+  damage: 2
   scoreOnKill: 150
   mergeChargeOnKill: 3
   deathEffect: {fileID: 4570882191875647136, guid: 5c61b2c2574ab0b449f1dd6d8922661d, type: 3}

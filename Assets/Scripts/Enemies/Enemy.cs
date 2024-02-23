@@ -56,18 +56,20 @@ public class Enemy : MonoBehaviour
                 players = GameObject.FindGameObjectsWithTag("Player");
                 target = players.Length > 0 ? players[Random.Range(0, players.Length)].transform : null;
             }
+            if (target != null)
+            {
+                // Move the enemy towards the player
+                transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 
-            // Move the enemy towards the player
-            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+                // Find the direction towards the target
+                Vector2 direction = (target.position - transform.position).normalized;
 
-            // Find the direction towards the target
-            Vector2 direction = (target.position - transform.position).normalized;
+                // Calculate the angle to the target
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-            // Calculate the angle to the target
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-            // Apply the rotation, -90 to assure the enemy is facing the right way
-            transform.rotation = Quaternion.Euler(0f, 0f, angle - 90);
+                // Apply the rotation, -90 to assure the enemy is facing the right way
+                transform.rotation = Quaternion.Euler(0f, 0f, angle - 90);
+            }
         }
         else
         {

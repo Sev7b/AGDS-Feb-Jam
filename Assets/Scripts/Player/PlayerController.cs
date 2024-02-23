@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     #region Private Variables
 
     private Rigidbody2D rb;
+    private CircleCollider2D cc2d;
     private Vector2 moveDirection = Vector2.zero;
     private Vector2 mousePosition = Vector2.zero;
 
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        cc2d = GetComponent<CircleCollider2D>();
 
         if (dashSlider != null)
         {
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviour
         // Check if dash duration has ended
         if (isDashing && Time.time >= dashEndTime)
         {
+            cc2d.enabled = true;
             isDashing = false;
         }
 
@@ -100,6 +103,8 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         dashEndTime = Time.time + dashDuration;
         lastDashTime = Time.time;
+
+        cc2d.enabled = false;
 
         if (moveDirection != Vector2.zero)
             rb.AddForce(moveDirection * dashForce, ForceMode2D.Impulse); // Apply dash force in the direction of movement

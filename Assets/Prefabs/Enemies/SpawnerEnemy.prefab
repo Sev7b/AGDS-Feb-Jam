@@ -248,18 +248,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cda941cc3271e04e8879e358a1e6dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSpeed: 0.5
+  minSpeed: 1
   maxSpeed: 2
   speed: 0
   health: 5
-  damage: 1
+  damage: 5
   scoreOnKill: 500
   mergeChargeOnKill: 8
   deathEffect: {fileID: 4570882191875647136, guid: 5c61b2c2574ab0b449f1dd6d8922661d, type: 3}
   spawningDistance: 15
   spawnCooldown: 3
-  spawnAmountMin: 1
-  spawnAmountMax: 3
+  spawnAmountMin: 3
+  spawnAmountMax: 6
   enemyPrefab: {fileID: 6705364422114920811, guid: 387fb31415c3bae43a3233aa0e36efe4, type: 3}
 --- !u!111 &8130017442536437611
 Animation:

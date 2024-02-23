@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8648298540907627545}
   - component: {fileID: 4788189866344184881}
   - component: {fileID: 6604511698126197700}
-  - component: {fileID: 7717530607988847636}
+  - component: {fileID: -8901122363786213273}
   - component: {fileID: 333781654684139654}
   m_Layer: 0
   m_Name: SawEnemy
@@ -151,7 +151,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &7717530607988847636
+--- !u!114 &-8901122363786213273
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,14 +160,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4625332175506994350}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26e0307e895dec5428a9e79da4f2b980, type: 3}
+  m_Script: {fileID: 11500000, guid: e3b2b3ded21141b42a9d5ed3d9501e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSpeed: 2
-  maxSpeed: 5
+  minSpeed: 4
+  maxSpeed: 7
   speed: 0
-  health: 3
-  damage: 3
+  health: 5
+  damage: 10
   scoreOnKill: 400
   mergeChargeOnKill: 8
   deathEffect: {fileID: 4570882191875647136, guid: 5c61b2c2574ab0b449f1dd6d8922661d, type: 3}
