@@ -163,8 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 747ce36daf3404d47aea4ab06757589e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  newBulletPrefab: {fileID: 3106169933513278789}
+  playerSource: 0
   damage: 0
   speed: 0
+  direction: {x: 0, y: 0}
 --- !u!114 &-2836459589311974254
 MonoBehaviour:
   m_ObjectHideFlags: 0
