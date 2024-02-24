@@ -67,7 +67,6 @@ public class ShootingEnemy : Enemy
 
     void FindClosestPlayer()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         float closestDistance = Mathf.Infinity;
         Transform closestPlayer = null;
 

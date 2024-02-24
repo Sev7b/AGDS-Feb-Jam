@@ -28,7 +28,13 @@ public class Weapon : MonoBehaviour
 
     public Slider reloadSlider;
 
+    public GameObject mergedPlayer;
+
+    public bool reloading;
+
     #region Private Variables
+
+    private GameObject[] players;
 
     private Transform bulletParent;
 
@@ -38,12 +44,12 @@ public class Weapon : MonoBehaviour
 
     private bool shooting;
 
-    private bool reloading;
-
     #endregion
 
     private void Awake()
     {
+        players = GameObject.FindGameObjectsWithTag("Player");
+
         bulletParent = GameObject.Find("Bullets").transform;
 
         ammoLeft = magSize;
@@ -78,7 +84,7 @@ public class Weapon : MonoBehaviour
         {
             for (int i = 0; i < pellets; i++)
             {
-                PlayerController player = GetComponentInParent<PlayerController>();
+                PlayerController playerController = transform.parent.GetComponent<PlayerController>();
                 // Instantiate bullet
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity, bulletParent);
                 Bullet bulletScript = bullet.GetComponent<Bullet>();
@@ -89,11 +95,11 @@ public class Weapon : MonoBehaviour
 
                 Vector2 direction = new Vector2(transform.up.x + spreadFactorX, transform.up.y + spreadFactorY);
                 // Set bullet's properties
-                if (player != null)
+                if (playerController != null)
                 {
-                    if (player.isPlayer1)
+                    if (playerController.isPlayer1)
                         bulletScript.playerSource = 1;
-                    else if (!player.isPlayer1)
+                    else if (!playerController.isPlayer1)
                         bulletScript.playerSource = 2;
                 }
                 else

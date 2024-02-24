@@ -44,7 +44,6 @@ public class JetEnemy : Enemy
 
     void FindClosestPlayer()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         float closestDistance = Mathf.Infinity;
         Transform closestPlayer = null;
 
@@ -90,8 +89,5 @@ public class JetEnemy : Enemy
         bullet.GetComponent<Rigidbody2D>().velocity = direction.normalized * bulletSpeed;
     }
 
-    public override void OnCollisionEnter2D(Collision2D collision)
-    {
-        
-    }
+    public override void OnCollisionEnter2D(Collision2D collision) {}
 }

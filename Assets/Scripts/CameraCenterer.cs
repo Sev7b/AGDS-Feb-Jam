@@ -38,9 +38,7 @@ public class CameraCenterer : MonoBehaviour
 
             else if (!player2.gameObject.activeSelf)                                   targetPosition = player1.position;
              
-            else                                                                       targetPosition = transform.position;
-
-            Debug.Log(targetPosition);
+            else                                                                       targetPosition = Vector3.Lerp(player1.position, player2.position, 0.5f);
 
             rb.position = targetPosition;
         }

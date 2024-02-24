@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.VisualScripting;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -30,7 +31,15 @@ public class GameManager : MonoBehaviour
     {
         if (!isGameOver)
         {
-            players = GameObject.FindGameObjectsWithTag("Player");
+            List<GameObject> playerList = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
+            GameObject mergedPlayer = GameObject.FindGameObjectWithTag("MergedPlayer");
+
+            if (mergedPlayer != null && mergedPlayer.activeSelf)
+            {
+                playerList.Add(mergedPlayer);
+            }
+
+            players = playerList.ToArray();
 
             if (players.Length == 0)
             {

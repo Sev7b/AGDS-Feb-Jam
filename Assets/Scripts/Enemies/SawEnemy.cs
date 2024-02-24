@@ -11,7 +11,6 @@ public class SawEnemy : Enemy
             // Check if the target is active
             if (!target.gameObject.activeSelf)
             {
-                players = GameObject.FindGameObjectsWithTag("Player");
                 target = players.Length > 0 ? players[Random.Range(0, players.Length)].transform : null;
             }
 

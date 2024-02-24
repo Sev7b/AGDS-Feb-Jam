@@ -25,8 +25,11 @@ public class PlayerMerge : MonoBehaviour
     private float lastMergeTime = -Mathf.Infinity; // Initialize to a large negative to start on cooldown
     private float timeSinceLastMerge;
 
+    private Weapon playerWeapon;
+
     private void Start()
     {
+        playerWeapon = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Weapon>();
         if (mergeSlider != null)
         {
             mergeSlider.maxValue = cooldown;
@@ -39,7 +42,7 @@ public class PlayerMerge : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && Time.time >= lastMergeTime + cooldown && !isMerged)
+        if (Input.GetKeyDown(KeyCode.Q) && Time.time >= lastMergeTime + cooldown && !isMerged && !playerWeapon.reloading)
         {
             TryMergePlayers();
         }
@@ -49,21 +52,34 @@ public class PlayerMerge : MonoBehaviour
 
     void TryMergePlayers()
     {
-        if (!player1.gameObject.activeSelf || !player2.gameObject.activeSelf) return;
+        if (!player1.gameObject.activeSelf && !player2.gameObject.activeSelf) return;
 
-        float distance = Vector3.Distance(player1.transform.position, player2.transform.position);
-        if (distance <= mergeDistance)
+        if (player1.gameObject.activeSelf && player2.gameObject.activeSelf)
         {
-            mergedPlayer.SetActive(true);
-            mergedPlayer.transform.position = (player1.transform.position + player2.transform.position) / 2f;
+            float distance = Vector3.Distance(player1.transform.position, player2.transform.position);
+            if (distance <= mergeDistance)
+            {
+                mergedPlayer.SetActive(true);
+                mergedPlayer.transform.position = (player1.transform.position + player2.transform.position) / 2f;
 
-            player1.SetActive(false);
-            player2.SetActive(false);
+                player1.SetActive(false);
+                player2.SetActive(false);
+                player1.transform.GetChild(0).gameObject.SetActive(false);
+                player2.transform.GetChild(0).gameObject.SetActive(false);
 
-            isMerged = true;
+                isMerged = true;
+                lastMergeTime = Time.time;
+
+                StartCoroutine(UnmergeAfterDelay());
+            }
+        }
+        else
+        {
+            player1.gameObject.SetActive(true);
+            player2.gameObject.SetActive(true);
+            player1.transform.GetChild(0).gameObject.SetActive(true);
+            player2.transform.GetChild(0).gameObject.SetActive(true);
             lastMergeTime = Time.time;
-
-            StartCoroutine(UnmergeAfterDelay());
         }
     }
 
@@ -83,6 +99,8 @@ public class PlayerMerge : MonoBehaviour
         {
             player1.SetActive(true);
             player2.SetActive(true);
+            player1.transform.GetChild(0).gameObject.SetActive(true);
+            player2.transform.GetChild(0).gameObject.SetActive(true);
 
             player1.transform.position = mergedPlayer.transform.position + Vector3.left;
             player2.transform.position = mergedPlayer.transform.position + Vector3.right;

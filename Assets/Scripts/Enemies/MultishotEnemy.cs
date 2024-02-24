@@ -37,7 +37,7 @@ public class MultishotEnemy : Enemy
             Shooting();
 
             // Check if the target exists
-            if (distanceToTarget > shootingDistance)
+            if (distanceToTarget > shootingDistance && target != null)
             {
                 // Move the enemy towards the player
                 transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);

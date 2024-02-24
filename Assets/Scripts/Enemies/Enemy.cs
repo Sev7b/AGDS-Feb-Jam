@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class Enemy : MonoBehaviour
 {
@@ -37,9 +38,10 @@ public class Enemy : MonoBehaviour
     virtual public void Awake()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        mergeManager = GameObject.Find("MergeManager").GetComponent<PlayerMerge>(); 
+        mergeManager = GameObject.Find("MergeManager").GetComponent<PlayerMerge>();
 
-        players = GameObject.FindGameObjectsWithTag("Player");
+        ResetPlayerArray();
+
         target = players[Random.Range(0, players.Length)].transform;
 
         speed = Random.Range(minSpeed, maxSpeed);
@@ -53,7 +55,7 @@ public class Enemy : MonoBehaviour
             // Check if the target is active
             if (!target.gameObject.activeSelf)
             {
-                players = GameObject.FindGameObjectsWithTag("Player");
+                ResetPlayerArray();
                 target = players.Length > 0 ? players[Random.Range(0, players.Length)].transform : null;
             }
 
@@ -88,7 +90,6 @@ public class Enemy : MonoBehaviour
 
     void FindClosestPlayer()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         float closestDistance = Mathf.Infinity;
         Transform closestPlayer = null;
 
@@ -129,11 +130,33 @@ public class Enemy : MonoBehaviour
 
     virtual public void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.transform.CompareTag("Player"))
+        if(collision.transform.CompareTag("Player") || collision.transform.CompareTag("MergedPlayer"))
         {
             collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage);
             Instantiate(deathEffect, transform.position, Quaternion.identity);
             Destroy(gameObject);
+        }
+    }
+
+    void ResetPlayerArray()
+    {
+        List<GameObject> playerList = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
+        GameObject mergedPlayer = GameObject.FindGameObjectWithTag("MergedPlayer");
+
+        if (mergedPlayer != null && mergedPlayer.activeSelf)
+        {
+            playerList.Add(mergedPlayer);
+        }
+
+        players = playerList.ToArray();
+
+        if (players.Length > 0)
+        {
+            target = players[Random.Range(0, players.Length)].transform;
+        }
+        else
+        {
+            target = null;
         }
     }
 }

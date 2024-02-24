@@ -96,7 +96,7 @@ public class WaveManager : MonoBehaviour
     // Check if the given position is within 10 units of any enemy
     bool IsPositionNearEnemy(Vector2 position)
     {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(position, 2f);
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(position, 10f);
         foreach (var hitCollider in hitColliders)
         {
             if (hitCollider.gameObject.CompareTag("Enemy"))

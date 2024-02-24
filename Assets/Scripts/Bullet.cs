@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour
                 Destroy(otherBullet.gameObject);
             }
         }
-        else if (!collision.CompareTag("Player") && !collision.CompareTag("Bullet"))
+        else if (!collision.CompareTag("Player") && !collision.CompareTag("MergedPlayer") && !collision.CompareTag("Bullet"))
         {
             if (collision.CompareTag("Enemy"))
             {
