@@ -36,18 +36,31 @@ public class JetEnemy : Enemy
             // Move forwards in the current facing direction
             transform.position += transform.up * speed * Time.deltaTime;
 
-            if (!target.gameObject.activeSelf)
-            {
-                players = GameObject.FindGameObjectsWithTag("Player");
-                if (players.Length > 0)
-                    target = players[Random.Range(0, players.Length - 1)].transform;
-                else
-                    target = null;
-            }
+            FindClosestPlayer();
 
             Shooting();
         }
     }
+
+    void FindClosestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        float closestDistance = Mathf.Infinity;
+        Transform closestPlayer = null;
+
+        foreach (GameObject player in players)
+        {
+            float distance = Vector2.Distance(transform.position, player.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestPlayer = player.transform;
+            }
+        }
+
+        target = closestPlayer;
+    }
+
 
     void Shooting()
     {

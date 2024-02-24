@@ -56,6 +56,9 @@ public class Enemy : MonoBehaviour
                 players = GameObject.FindGameObjectsWithTag("Player");
                 target = players.Length > 0 ? players[Random.Range(0, players.Length)].transform : null;
             }
+
+            FindClosestPlayer();
+
             if (target != null)
             {
                 // Move the enemy towards the player
@@ -81,6 +84,25 @@ public class Enemy : MonoBehaviour
 
             transform.position += transform.up * speed * Time.deltaTime;
         }
+    }
+
+    void FindClosestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        float closestDistance = Mathf.Infinity;
+        Transform closestPlayer = null;
+
+        foreach (GameObject player in players)
+        {
+            float distance = Vector2.Distance(transform.position, player.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestPlayer = player.transform;
+            }
+        }
+
+        target = closestPlayer;
     }
 
 

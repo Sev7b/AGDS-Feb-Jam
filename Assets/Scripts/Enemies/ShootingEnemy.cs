@@ -39,6 +39,8 @@ public class ShootingEnemy : Enemy
             // Apply the rotation, -90 to assure the enemy is facing the right way
             transform.rotation = Quaternion.Euler(0f, 0f, angle - 90);
 
+            FindClosestPlayer();
+
             if (!target.gameObject.activeSelf)
             {
                 players = GameObject.FindGameObjectsWithTag("Player");
@@ -61,6 +63,25 @@ public class ShootingEnemy : Enemy
                 transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
             }
         }
+    }
+
+    void FindClosestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        float closestDistance = Mathf.Infinity;
+        Transform closestPlayer = null;
+
+        foreach (GameObject player in players)
+        {
+            float distance = Vector2.Distance(transform.position, player.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestPlayer = player.transform;
+            }
+        }
+
+        target = closestPlayer;
     }
 
     void Shooting()

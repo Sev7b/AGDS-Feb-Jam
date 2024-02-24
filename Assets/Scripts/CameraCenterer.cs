@@ -28,9 +28,9 @@ public class CameraCenterer : MonoBehaviour
     {
         if (player1 != null && player2 != null)
         {
-            Vector3 targetPosition = Vector3.zero;
+            Vector3 targetPosition;
 
-            if (mergedPlayer != null && mergedPlayer.gameObject.activeSelf)            targetPosition = mergedPlayer.position;
+            if (mergedPlayer.gameObject.activeSelf)                                    targetPosition = mergedPlayer.position;
 
             else if (player1.gameObject.activeSelf && player2.gameObject.activeSelf)   targetPosition = Vector3.Lerp(player1.position, player2.position, 0.5f);
 
@@ -38,7 +38,9 @@ public class CameraCenterer : MonoBehaviour
 
             else if (!player2.gameObject.activeSelf)                                   targetPosition = player1.position;
              
-            else                                                                       targetPosition = Vector3.Lerp(player1.position, player2.position, 0.5f);
+            else                                                                       targetPosition = transform.position;
+
+            Debug.Log(targetPosition);
 
             rb.position = targetPosition;
         }
